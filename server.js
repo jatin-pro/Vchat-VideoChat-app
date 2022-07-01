@@ -42,23 +42,25 @@ app.get('/:room', (request, response) => {
 
 io.on('connection' , socket => { 
     console.log(`connection occured`)
-    socket.on('join-room', (roomId, userId) => {
+    socket.on('join-room', (roomId, userID, username) => {
+        console.log(username); 
         socket.join(roomId);    //we are joining the room whose id is been passed.
-        socket.to(roomId).emit('user-connected', userId); //socket letting other user know (broadcasting) that user has joined  with this id in that room.
+        socket.to(roomId).emit('user-connected', userID, username); //socket letting other user know (broadcasting) that user has joined  with this id in that room.
+    
         socket.on('message', (message) => {
-            io.to(roomId).emit('createMessage', message)
+            io.to(roomId).emit('createMessage',message, userID, username)
         })
         socket.on('disconnect', () => {
-            io.to(roomId).emit('user-disconnected', userId)
+            io.to(roomId).emit('user-disconnected', userID)
         })
-        socket.on('leave-room', () => {
-            io.to(roomId).emit('user-left', userId)
+        socket.on('leave-room', (username) => {
+           io.to(roomId).emit('user-left', userID, username)
         })
     })
 })
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 
 server.listen( PORT, function() {
