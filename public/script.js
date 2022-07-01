@@ -242,5 +242,5 @@ const handleActive = (buttonClass) => {
 
 
 const handleInvite = () => { 
-  prompt("Copy to clipboard: Ctrl+C, Enter", "http://localhost:8000/" + ROOM_ID);
+  prompt("Copy to clipboard: Ctrl+C, Enter", "https://vchat-video-chat-app.herokuapp.com/" + ROOM_ID);
 }
